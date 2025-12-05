@@ -1,0 +1,30 @@
+<!-- form 제출 방지 -->
+<form onsubmit="return false;">
+    <label for="fileName">파일명 (확장자 포함):</label>
+    <input type="text" id="fileName" name="fileName"
+           onkeydown="if(event.key==='Enter'){ event.preventDefault(); loadImage(); }">
+    <button type="button" onclick="loadImage()">출력</button>
+</form>
+
+<div id="imageContainer"></div>
+
+<script>
+    function loadImage() {
+        var fileName = document.getElementById("fileName").value.trim();
+        var container = document.getElementById("imageContainer");
+        var image = document.createElement("img");
+
+        // 입력한 파일명을 사용하여 S3 이미지 URL 생성
+        var s3ImageUrl =
+            "https://shincc1128.s3.ap-northeast-2.amazonaws.com/" 
+            + encodeURIComponent(fileName);
+
+        // 디버깅용 콘솔로그 (옵션)
+        console.log("Loading:", s3ImageUrl);
+
+        image.src = s3ImageUrl;
+        image.style.maxWidth = "600px";  
+        container.innerHTML = '';  
+        container.appendChild(image);
+    }
+</script>
